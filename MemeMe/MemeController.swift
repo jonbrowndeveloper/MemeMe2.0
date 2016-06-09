@@ -24,7 +24,7 @@ class MemeController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     let imagePicker = UIImagePickerController()
     
-    let memedImage = UIImage!()
+    let memedImage = UIImage()
 
     @IBOutlet weak var actionButton: UIBarButtonItem!
     // added active text field to find out which text field is being edited. Making sure to not move screen if top text field is being edited
@@ -77,16 +77,13 @@ class MemeController: UIViewController, UINavigationControllerDelegate, UIImageP
         
         topTextField.textAlignment = .Center
         bottomTextField.textAlignment = .Center
-        
-        // text fill color to white
-        
-        topTextField.textColor = UIColor.whiteColor()
-        bottomTextField.textColor = UIColor.whiteColor()
-        
+                
         // set textfields' delegates to self
         
         topTextField.delegate = self
         bottomTextField.delegate = self
+        
+        // disable action button if there is no image
         
         if (imageView.image == nil)
         {
@@ -138,9 +135,9 @@ class MemeController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     func subscribeToKeyboardNotifications()
     {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:"    , name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MemeController.keyboardWillShow(_:))    , name: UIKeyboardWillShowNotification, object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keybaordWillHide:"    , name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MemeController.keybaordWillHide(_:))    , name: UIKeyboardWillHideNotification, object: nil)
     }
     
     func unsubscribeFromKeyboardNotifications()
@@ -243,7 +240,11 @@ class MemeController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     @IBAction func shareButton(sender: AnyObject)
     {
+        // call save function
+        
         save()
+        
+        // sharing parameters and initializing activity view controller
         
         let textToShare = "Sent from MemeMe!"
         
@@ -251,9 +252,21 @@ class MemeController: UIViewController, UINavigationControllerDelegate, UIImageP
         
         let activityViewController = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
         
+        // display activity view controller
+        
         activityViewController.popoverPresentationController?.sourceView = sender as! UIButton
         self.presentViewController(activityViewController, animated: true, completion: nil)
         
     }
-
+    
+    @IBAction func cancelButton(sender: AnyObject)
+    {
+        // reset all values to the screen's original state
+        
+        imageView.image = nil
+        
+        topTextField.text = "TOP"
+        bottomTextField.text = "BOTTOM"
+    }
+    
 }
