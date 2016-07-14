@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MemeController.swift
 //  MemeMe
 //
 //  Created by Jon on 5/6/16.
@@ -7,6 +7,7 @@
 //
 
 import UIKit
+
 
 class MemeController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate {
     
@@ -27,12 +28,13 @@ class MemeController: UIViewController, UINavigationControllerDelegate, UIImageP
     let memedImage = UIImage()
 
     @IBOutlet weak var actionButton: UIBarButtonItem!
+    
     // added active text field to find out which text field is being edited. Making sure to not move screen if top text field is being edited
     
     var activeTextField: UITextField!
     
     // Meme Struct
-    
+    /*
     struct Meme
     {
         var topText: String!
@@ -40,9 +42,9 @@ class MemeController: UIViewController, UINavigationControllerDelegate, UIImageP
         var image: UIImage!
         var memedImage: UIImage!
         
-    }
+    }*/
     
-    var meme: Meme!
+    var meme = Meme()
 
     override func viewDidLoad()
     {
@@ -57,38 +59,33 @@ class MemeController: UIViewController, UINavigationControllerDelegate, UIImageP
         
         imagePicker.delegate = self
         
-        // disable camera if the device does not have a camera
-        
-        cameraButton.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
-        
         // set textfield attributes
         
-        let memeTextAttributes = [
+        setTextFieldAttributes(topTextField)
+        setTextFieldAttributes(bottomTextField)
+    }
+    
+    func setTextFieldAttributes(textfield: UITextField)
+    {
+        // set textfield attributes
+        
+        let memeTextAttributes =
+        [
             NSStrokeColorAttributeName : UIColor.blackColor(),
             NSForegroundColorAttributeName : UIColor.whiteColor(),
             NSFontAttributeName : UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
             NSStrokeWidthAttributeName : -3.0,
         ]
-    
-        topTextField.defaultTextAttributes = memeTextAttributes
-        bottomTextField.defaultTextAttributes = memeTextAttributes
+        
+        textfield.defaultTextAttributes = memeTextAttributes
         
         // center text
         
-        topTextField.textAlignment = .Center
-        bottomTextField.textAlignment = .Center
-                
+        textfield.textAlignment = .Center
+        
         // set textfields' delegates to self
         
-        topTextField.delegate = self
-        bottomTextField.delegate = self
-        
-        // disable action button if there is no image
-        
-        if (imageView.image == nil)
-        {
-            actionButton.enabled = false;
-        }
+        textfield.delegate = self
     }
 
     @IBAction func startCamera(sender: AnyObject)
@@ -126,6 +123,18 @@ class MemeController: UIViewController, UINavigationControllerDelegate, UIImageP
     {
         super.viewWillAppear(animated)
         subscribeToKeyboardNotifications()
+        
+        // disable camera if the device does not have a camera
+        
+        cameraButton.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
+        
+        // disable action button if there is no image
+        
+        if (imageView.image == nil)
+        {
+            actionButton.enabled = false;
+        }
+
     }
     
     override func viewWillDisappear(animated: Bool)
@@ -166,7 +175,7 @@ class MemeController: UIViewController, UINavigationControllerDelegate, UIImageP
         
         if (activeTextField.tag == 0)
         {
-            view.frame.origin.y -= getKeyboardHeight(notification)
+            view.frame.origin.y = getKeyboardHeight(notification) * (-1)
 
         }
     }
@@ -177,7 +186,7 @@ class MemeController: UIViewController, UINavigationControllerDelegate, UIImageP
         
         if (view.frame.origin.y != 0.0)
         {
-            view.frame.origin.y += getKeyboardHeight(notification)
+            self.view.frame.origin.y = 0
         }
 
     }
@@ -194,6 +203,13 @@ class MemeController: UIViewController, UINavigationControllerDelegate, UIImageP
     func textFieldDidBeginEditing(textField: UITextField)
     {
         self.activeTextField = textField
+        
+        // clear out the text field
+        
+        if textField.text == "TOP" || textField.text == "BOTTOM"
+        {
+            textField.text = ""
+        }
     }
     
     // MARK: Meme Object
@@ -204,7 +220,10 @@ class MemeController: UIViewController, UINavigationControllerDelegate, UIImageP
         
         if (imageView.image != nil)
         {
-            self.meme = Meme( topText: topTextField.text!, bottomText: bottomTextField.text!, image:imageView.image, memedImage: generateMemedImage())
+            self.meme.TopText = topTextField.text!
+            self.meme.BottomText = bottomTextField.text!
+            self.meme.Image = imageView.image!
+            self.meme.MemedImage = generateMemedImage()
         }
         else
         {
@@ -240,15 +259,11 @@ class MemeController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     @IBAction func shareButton(sender: AnyObject)
     {
-        // call save function
-        
-        save()
-        
         // sharing parameters and initializing activity view controller
         
         let textToShare = "Sent from MemeMe!"
         
-        let objectsToShare = [textToShare, meme.memedImage]
+        let objectsToShare = [textToShare, generateMemedImage()]
         
         let activityViewController = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
         
@@ -257,7 +272,25 @@ class MemeController: UIViewController, UINavigationControllerDelegate, UIImageP
         activityViewController.popoverPresentationController?.sourceView = sender as! UIButton
         self.presentViewController(activityViewController, animated: true, completion: nil)
         
+        // call save function within activity view completion handler
+        
+        activityViewController.completionWithItemsHandler = {(activityType, completed:Bool, returnedItems:[AnyObject]?, error: NSError?) in
+            
+            // Return if cancelled
+            if (!completed)
+            {
+                print("activity view did not complete")
+                return
+            }
+            
+            // call save function
+            
+            self.save()
+        }
+        
     }
+    
+    
     
     @IBAction func cancelButton(sender: AnyObject)
     {
@@ -267,6 +300,10 @@ class MemeController: UIViewController, UINavigationControllerDelegate, UIImageP
         
         topTextField.text = "TOP"
         bottomTextField.text = "BOTTOM"
+        
+        // disable action button
+        
+        actionButton.enabled = false
     }
     
 }

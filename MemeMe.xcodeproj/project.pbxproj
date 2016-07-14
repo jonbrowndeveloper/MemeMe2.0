@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		29EB399C1D171323006EEAAF /* Meme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29EB399B1D171323006EEAAF /* Meme.swift */; };
 		29F137591CDD6D6100D0A5B2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F137581CDD6D6100D0A5B2 /* AppDelegate.swift */; };
 		29F1375B1CDD6D6100D0A5B2 /* MemeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F1375A1CDD6D6100D0A5B2 /* MemeController.swift */; };
 		29F1375E1CDD6D6100D0A5B2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29F1375C1CDD6D6100D0A5B2 /* Main.storyboard */; };
@@ -34,6 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		29EB399B1D171323006EEAAF /* Meme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Meme.swift; sourceTree = "<group>"; };
 		29F137551CDD6D6100D0A5B2 /* MemeMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MemeMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		29F137581CDD6D6100D0A5B2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		29F1375A1CDD6D6100D0A5B2 /* MemeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemeController.swift; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 			children = (
 				29F137581CDD6D6100D0A5B2 /* AppDelegate.swift */,
 				29F1375A1CDD6D6100D0A5B2 /* MemeController.swift */,
+				29EB399B1D171323006EEAAF /* Meme.swift */,
 				29F1375C1CDD6D6100D0A5B2 /* Main.storyboard */,
 				29F1375F1CDD6D6100D0A5B2 /* Assets.xcassets */,
 				29F137611CDD6D6100D0A5B2 /* LaunchScreen.storyboard */,
@@ -257,6 +260,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29EB399C1D171323006EEAAF /* Meme.swift in Sources */,
 				29F1375B1CDD6D6100D0A5B2 /* MemeController.swift in Sources */,
 				29F137591CDD6D6100D0A5B2 /* AppDelegate.swift in Sources */,
 			);
