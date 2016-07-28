@@ -8,10 +8,13 @@
 
 import UIKit
 
-class Meme: NSObject
+// Meme Struct
+
+struct Meme
 {
-    var TopText: String?
-    var BottomText: String?
-    var Image: UIImage?
-    var MemedImage: UIImage?
+    var topText: String!
+    var bottomText: String!
+    var image: UIImage!
+    var memedImage: UIImage!
+    
 }

@@ -33,17 +33,6 @@ class MemeController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     var activeTextField: UITextField!
     
-    // Meme Struct
-    /*
-    struct Meme
-    {
-        var topText: String!
-        var bottomText: String!
-        var image: UIImage!
-        var memedImage: UIImage!
-        
-    }*/
-    
     var meme = Meme()
 
     override func viewDidLoad()
@@ -220,10 +209,10 @@ class MemeController: UIViewController, UINavigationControllerDelegate, UIImageP
         
         if (imageView.image != nil)
         {
-            self.meme.TopText = topTextField.text!
-            self.meme.BottomText = bottomTextField.text!
-            self.meme.Image = imageView.image!
-            self.meme.MemedImage = generateMemedImage()
+            self.meme.topText = topTextField.text!
+            self.meme.bottomText = bottomTextField.text!
+            self.meme.image = imageView.image!
+            self.meme.memedImage = generateMemedImage()
         }
         else
         {
