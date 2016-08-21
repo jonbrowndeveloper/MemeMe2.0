@@ -213,6 +213,12 @@ class MemeController: UIViewController, UINavigationControllerDelegate, UIImageP
             self.meme.bottomText = bottomTextField.text!
             self.meme.image = imageView.image!
             self.meme.memedImage = generateMemedImage()
+            
+            // save meme to App Delegate meme array
+            
+            let object = UIApplication.sharedApplication().delegate
+            let appDelegate = object as! AppDelegate
+            appDelegate.memes.append(meme)
         }
         else
         {
