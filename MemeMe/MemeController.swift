@@ -8,8 +8,8 @@
 
 import UIKit
 
-
-class MemeController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate {
+class MemeController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate
+{
     
     @IBOutlet weak var imageView: UIImageView!
     
@@ -50,33 +50,16 @@ class MemeController: UIViewController, UINavigationControllerDelegate, UIImageP
         
         // set textfield attributes
         
-        setTextFieldAttributes(topTextField)
-        setTextFieldAttributes(bottomTextField)
-    }
-    
-    func setTextFieldAttributes(textfield: UITextField)
-    {
-        // set textfield attributes
-        
-        let memeTextAttributes =
-        [
-            NSStrokeColorAttributeName : UIColor.blackColor(),
-            NSForegroundColorAttributeName : UIColor.whiteColor(),
-            NSFontAttributeName : UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
-            NSStrokeWidthAttributeName : -3.0,
-        ]
-        
-        textfield.defaultTextAttributes = memeTextAttributes
-        
-        // center text
-        
-        textfield.textAlignment = .Center
+        MemeHelperClass().setTextFieldAttributes(topTextField, size: 40.0)
+        MemeHelperClass().setTextFieldAttributes(bottomTextField, size: 40.0)
         
         // set textfields' delegates to self
         
-        textfield.delegate = self
-    }
+        topTextField.delegate = self
+        bottomTextField.delegate = self
 
+    }
+    
     @IBAction func startCamera(sender: AnyObject)
     {
         // create image picker to start up camera
@@ -131,6 +114,9 @@ class MemeController: UIViewController, UINavigationControllerDelegate, UIImageP
         super.viewWillDisappear(animated)
         unsubscribeFromKeyboardNotifications()
     }
+    
+    // keybaord notifications
+    
     func subscribeToKeyboardNotifications()
     {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MemeController.keyboardWillShow(_:))    , name: UIKeyboardWillShowNotification, object: nil)
@@ -147,6 +133,8 @@ class MemeController: UIViewController, UINavigationControllerDelegate, UIImageP
             name: UIKeyboardWillHideNotification, object: nil)
 
     }
+    
+    // MARK: - TextField Methods
     
     // close keyboard when hitting return
     
@@ -213,6 +201,8 @@ class MemeController: UIViewController, UINavigationControllerDelegate, UIImageP
             self.meme.bottomText = bottomTextField.text!
             self.meme.image = imageView.image!
             self.meme.memedImage = generateMemedImage()
+            
+            print(meme)
             
             // save meme to App Delegate meme array
             
@@ -299,6 +289,10 @@ class MemeController: UIViewController, UINavigationControllerDelegate, UIImageP
         // disable action button
         
         actionButton.enabled = false
+        
+        // dismiss current view controller
+        
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
 }
