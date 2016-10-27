@@ -52,8 +52,8 @@ class MemeTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("tvCell", forIndexPath: indexPath) as! CustomMemeTVCell
         
         let meme = memes[indexPath.item]
-        
-        cell.imageView?.image = meme.image
+                
+        cell.tvImageView.image = meme.image
         
         cell.setCellProperties(meme.topText, bottomText: meme.bottomText)
         
